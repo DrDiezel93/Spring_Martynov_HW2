@@ -1,38 +1,47 @@
 package com.example.HW_Sem2.service;
+import com.example.HW_Sem2.aspect.TrackUserAction;
 import com.example.HW_Sem2.model.User;
+import com.example.HW_Sem2.repositories.UserRepo;
 import com.example.HW_Sem2.repositories.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
+@Log
 public class UserService {
-    private final UserRepository userRepository;
-
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepo userRepo;
 
     public List<User> findAll(){
-        return userRepository.findAll();
+        return userRepo.findAll();
     }
-
+    @TrackUserAction
     public User saveUser(User user){
-        return userRepository.save(user);
+        return userRepo.save(user);
+    }
+    @TrackUserAction
+    public void deleteById(Long id){
+        userRepo.deleteById(id);
     }
 
-    public void deleteById(int id){
-        userRepository.deleteById(id);
+    public User findById(Long id) {
+        return userRepo.getById(id);
     }
-
-    public User findById(int id) {
-        return userRepository.findById(id);
-    }
-
-    public void update(User user) {
-        userRepository.update(user);
+    @TrackUserAction
+    public User update(User user) {
+        Optional<User> optionalUser = userRepo.findById(user.getId());
+        if (optionalUser.isPresent()) {
+            User user1 = optionalUser.get();
+            user1.setFirstName(user.getFirstName());
+            user1.setLastName(user.getLastName());
+           return userRepo.save(user1);
+        } else {
+            throw new IllegalArgumentException("Book not found with id: " + user.getId());
+        }
     }
 }

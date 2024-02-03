@@ -21,7 +21,7 @@ public class UserRepository {
 
         RowMapper<User> userRowMapper = (r, i) -> {
             User rowObject = new User();
-            rowObject.setId(r.getInt("id"));
+            rowObject.setId(r.getLong("id"));
             rowObject.setFirstName(r.getString("firstName"));
             rowObject.setLastName(r.getString("lastName"));
             return rowObject;
@@ -36,7 +36,7 @@ public class UserRepository {
         return  user;
     }
 
-    public void deleteById(int id){
+    public void deleteById(Long id){
         String sql = "DELETE FROM userTable WHERE id=?";
         jdbc.update(sql, id);
     }
@@ -45,7 +45,7 @@ public class UserRepository {
         String sql = "SELECT * FROM userTable WHERE id=?";
         RowMapper<User> userRowMapper = (r, i) -> {
             User rowObject = new User();
-            rowObject.setId(r.getInt("id"));
+            rowObject.setId(r.getLong("id"));
             rowObject.setFirstName(r.getString("firstName"));
             rowObject.setLastName(r.getString("lastName"));
             return rowObject;

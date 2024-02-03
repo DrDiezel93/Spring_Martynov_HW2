@@ -2,6 +2,7 @@ package com.example.HW_Sem2.controllers;
 
 import com.example.HW_Sem2.model.User;
 import com.example.HW_Sem2.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/users")
     public String findAll(Model model){
@@ -43,13 +40,13 @@ public class UserController {
     }
 
     @GetMapping("user-delete/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/users";
     }
 
     @GetMapping("/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") int id, Model model) {
+    public String updateUserForm(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user-update";
