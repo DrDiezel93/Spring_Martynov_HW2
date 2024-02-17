@@ -2,6 +2,8 @@ package com.example.HW_Sem2.controllers;
 
 import com.example.HW_Sem2.model.User;
 import com.example.HW_Sem2.service.UserService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final Counter testCounter = Metrics.counter("custom_counter");
 
     @GetMapping("/users")
     public String findAll(Model model){
+        testCounter.increment();
         List<User> users = userService.findAll();
-
-
         model.addAttribute("users", users);
         return "user-list";
         //return "home.html";
