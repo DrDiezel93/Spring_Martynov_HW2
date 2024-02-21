@@ -1,4 +1,5 @@
 package com.example.HW_Sem2.model;
+import jdk.jshell.Snippet;
 import lombok.Data;
 
 import javax.persistence.*;
