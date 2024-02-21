@@ -32,14 +32,26 @@ public class UserService {
     public User findById(Long id) {
         return userRepo.getById(id);
     }
+//    @TrackUserAction
+//    public User update(User user) {
+//        Optional<User> optionalUser = userRepo.findById(user.getId());
+//        if (optionalUser.isPresent()) {
+//            User user1 = optionalUser.get();
+//            user1.setFirstName(user.getFirstName());
+//            user1.setLastName(user.getLastName());
+//           return userRepo.save(user1);
+//        } else {
+//            throw new IllegalArgumentException("Book not found with id: " + user.getId());
+//        }
+//    }
+
     @TrackUserAction
     public User update(User user) {
         Optional<User> optionalUser = userRepo.findById(user.getId());
         if (optionalUser.isPresent()) {
-            User user1 = optionalUser.get();
-            user1.setFirstName(user.getFirstName());
-            user1.setLastName(user.getLastName());
-           return userRepo.save(user1);
+            User userTemp = optionalUser.get();
+            return userRepo.save(new User.Builder().userId(user.getId()).firstName(user.getFirstName() != null ? user.getFirstName() : userTemp.getFirstName())
+                    .lastName(user.getLastName() != null ? user.getLastName() : userTemp.getLastName()).build());
         } else {
             throw new IllegalArgumentException("Book not found with id: " + user.getId());
         }

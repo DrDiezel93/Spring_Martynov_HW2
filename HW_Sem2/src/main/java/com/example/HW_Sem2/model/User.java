@@ -15,4 +15,31 @@ public class User {
     private String firstName;
     @Column
     private String lastName;
+
+    public static class Builder {
+        private final User newUser;
+
+        public Builder() {
+            newUser = new User();
+        }
+
+        public Builder userId(Long id){
+            newUser.id = id;
+            return this;
+        }
+
+        public Builder firstName(String firstName){
+            newUser.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName){
+            newUser.lastName = lastName;
+            return this;
+        }
+
+        public User build(){
+            return newUser;
+        }
+    }
 }
